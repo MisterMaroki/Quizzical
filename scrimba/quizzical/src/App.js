@@ -1,7 +1,8 @@
-import { Component } from 'react';
 import Select from 'react-select';
 import { Button, ButtonGroup } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { Rings } from 'react-loader-spinner';
+
 import './App.css';
 import Question from './Question';
 
@@ -15,6 +16,7 @@ function App() {
 	const [categories, setCategories] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(9);
 	const [selectedType, setSelectedType] = useState('multiple');
+	const [isLoading, setIsLoading] = useState(false);
 
 	const getNewQuestions = async () => {
 		const res = await fetch(
@@ -22,6 +24,7 @@ function App() {
 		);
 		const data = await res.json();
 		setQuestions(() => data.results);
+		setIsLoading(false);
 	};
 	const getCategories = async () => {
 		const res = await fetch('https://opentdb.com/api_category.php');
@@ -30,6 +33,7 @@ function App() {
 	};
 
 	const startGame = async () => {
+		setIsLoading(true);
 		setInOptions(false);
 		setIsEvaluated(false);
 		getNewQuestions();
@@ -86,14 +90,16 @@ function App() {
 
 	return (
 		<div className="App questions">
-			{!started && !inOptions && (
+			{isLoading && <Rings color="#e2d784" height={80} width={80} />}
+			{!started && !inOptions && !isLoading && (
 				<div className="app__flex start-screen">
+					<Rings color="#e2d784" height={80} width={80} />
 					<h2 className="quiz-start-header">Quizzical</h2>
 					<p>Play as fast as you can to beat the others!</p>
 					<button onClick={() => setInOptions(true)}>Start quiz</button>
 				</div>
 			)}
-			{!started && inOptions && (
+			{!started && inOptions && !isLoading && (
 				<div className="app__flex start-screen">
 					<div className="question">
 						<h3>Choose your difficulty</h3>
@@ -175,7 +181,7 @@ function App() {
 					<button onClick={() => startGame()}>Start quiz</button>
 				</div>
 			)}
-			{started && !inOptions && (
+			{started && !inOptions && !isLoading && (
 				<div className="questions">
 					{questionElements}
 					<div className="bottom">

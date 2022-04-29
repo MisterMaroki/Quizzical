@@ -15,8 +15,6 @@ function App() {
 	const [questions, setQuestions] = useState([]);
 	const [isEvaluated, setIsEvaluated] = useState(false);
 	const [correctAnswersTally, setCorrectAnswersTally] = useState(0);
-	const [currentPage, setCurrentPage] = useState(1);
-	console.log('🚀 ~ file: App.js ~ line 19 ~ App ~ currentPage', currentPage);
 
 	const [isRestarted, setIsRestarted] = useState(false);
 
@@ -33,9 +31,9 @@ function App() {
 		setIsRestarted(false);
 	};
 
-	// useEffect(() => {
-	// 	countSelected();
-	// }, [isEvaluated]);
+	useEffect(() => {
+		countSelected();
+	}, [isEvaluated]);
 
 	const countSelected = () => {
 		const howManySelected =
@@ -45,7 +43,6 @@ function App() {
 
 	const submitAnswers = () => {
 		setIsEvaluated(true);
-		countSelected();
 	};
 
 	const restart = () => {
@@ -58,26 +55,20 @@ function App() {
 
 	useEffect(() => {
 		if (isRestarted) {
-			setCurrentPage(1);
 			setIsRestarted(false);
 		}
 	}, [isRestarted]);
 
 	//map over questions in state to generate a Question for each
-	const questionElements = questions
-		?.slice(currentPage * 5 - 5, currentPage * 5)
-		.map((question) => (
-			<Question
-				//all question data
-				question={question}
-				//whether they have been submitted
-				isEvaluated={isEvaluated}
-				isRestarted={isRestarted}
-				//need to be able
-				correctAnswersTally={correctAnswersTally}
-				setCorrectAnswersTally={setCorrectAnswersTally}
-			/>
-		));
+	const questionElements = questions?.slice(0, 5).map((question) => (
+		<Question
+			//all question data
+			question={question}
+			//whether they have been submitted
+			isEvaluated={isEvaluated}
+			isRestarted={isRestarted}
+		/>
+	));
 
 	return (
 		<div className="App">

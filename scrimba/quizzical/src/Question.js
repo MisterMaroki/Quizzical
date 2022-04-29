@@ -7,8 +7,6 @@ const Question = ({
 	question,
 	isEvaluated,
 
-	correctAnswersTally,
-	setCorrectAnswersTally,
 	isRestarted,
 }) => {
 	const [isAnswered, setIsAnswered] = useState(false);

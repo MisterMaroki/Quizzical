@@ -90,7 +90,7 @@ button {
 		border: none;
 	}
 	.css-1rwt2y5-MuiButtonBase-root-MuiButton-root:hover {
-		border: 1px solid $tertiary;
+		border: 1px solid $tertiary !important;
 	}
 }
 @keyframes bounce {

@@ -24,12 +24,14 @@ const Question = (props) => {
 	});
 
 	const handleAnswer = (answer) => {
-		setIsAnswered(true);
-		setSelectedAnswer(answer);
+		if (!props.isEvaluated) {
+			setIsAnswered(true);
+			setSelectedAnswer(answer);
 
-		answer.correct &&
-			answer.answer !== selectedAnswer &&
-			props.setCorrectAnswersTally(() => props.correctAnswersTally + 1);
+			answer.correct &&
+				answer.answer !== selectedAnswer &&
+				props.setCorrectAnswersTally(() => props.correctAnswersTally + 1);
+		}
 	};
 
 	const answerElements = answers?.map((answer) => (

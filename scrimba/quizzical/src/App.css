@@ -1,0 +1,110 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #062c30;
+  font-size: 2rem;
+  color: #f5f5f5;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+          box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.question {
+  max-width: 600px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  border-bottom: 1px solid rgba(245, 245, 245, 0.3);
+  padding-block: 1rem;
+}
+
+.question h3 {
+  font-size: 1.2rem;
+}
+
+.question .answers {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  margin-top: 1rem;
+  -ms-flex-wrap: none;
+      flex-wrap: none;
+  gap: 0.5rem;
+}
+
+.question .answer {
+  background-color: transparent;
+  color: #f5f5f5;
+  border: 1px solid #f5f5f5;
+}
+
+.question .selected {
+  -webkit-filter: brightness(0.9);
+          filter: brightness(0.9);
+  color: #f5f5f5;
+  border: 1px solid #f5f5f5;
+  background-color: rgba(245, 245, 245, 0.07);
+}
+
+.question .selected .wrong {
+  color: #6b7688;
+  background-color: #f8bcbc;
+}
+
+.question .selected .correct {
+  color: #062c30;
+  background-color: #94d7a2;
+}
+
+.question .wrong {
+  color: #6b7688;
+  background-color: #f8bcbc;
+}
+
+.question .correct {
+  color: #062c30;
+  background-color: #94d7a2;
+}
+
+.question .wrong,
+.question .correct {
+  border: none;
+}
+/*# sourceMappingURL=App.css.map */

@@ -1,8 +1,4 @@
 body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -59,6 +55,12 @@ button {
   font-size: 1.2rem;
 }
 
+@media screen and (max-width: 500px) {
+  .question h3 {
+    font-size: 0.8rem;
+  }
+}
+
 .question .answers {
   -ms-flex-item-align: start;
       align-self: flex-start;
@@ -108,11 +110,17 @@ button {
   border: none;
 }
 
-.question .MuiButtonGroup-root:hover.MuiButton-root:hover {
+@media screen and (max-width: 600px) {
+  .MuiButton-root {
+    font-size: 0.4rem;
+  }
+}
+
+.MuiButtonGroup-root:hover.MuiButton-root:hover {
   border: 1px solid #e2d784 !important;
 }
 
-.question .MuiButton-root:hover {
+.MuiButton-root:hover {
   border: 1px solid #e2d784 !important;
 }
 
@@ -138,7 +146,13 @@ button {
       align-self: flex-end;
 }
 
-#category .MuiSelect-outlined {
-  color: #062c30;
+.bottom .bottomBtn {
+  background-color: #e2d784;
+  color: #030303;
+  border: 1px solid #e2d784;
+}
+
+.bottom .bottomBtn:hover {
+  color: #e2d784;
 }
 /*# sourceMappingURL=App.css.map */

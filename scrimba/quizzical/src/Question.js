@@ -4,7 +4,6 @@ import { Button, ButtonGroup } from '@mui/material';
 
 var he = require('he');
 const Question = ({ question, isEvaluated }) => {
-	const [isAnswered, setIsAnswered] = useState(false);
 	const [selectedAnswer, setSelectedAnswer] = useState([]);
 	//in order to avoid shuffling every time this is re-rendered we will shuffle only once when we initialise state for each question
 	const [answers, setAnswers] = useState([
@@ -14,7 +13,6 @@ const Question = ({ question, isEvaluated }) => {
 	const answerBtn = useRef(null);
 	const handleAnswer = (answer) => {
 		if (!isEvaluated) {
-			setIsAnswered(true);
 			setSelectedAnswer(he.decode(answer));
 		}
 	};

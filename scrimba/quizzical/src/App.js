@@ -3,6 +3,7 @@ import { Button, ButtonGroup } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Rings } from 'react-loader-spinner';
 import Confetti from 'react-confetti';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import './App.css';
 import Question from './Question';
@@ -190,10 +191,15 @@ function App() {
 				<div className="questions">
 					{questionElements}
 					<div className="bottom">
-						<button onClick={isEvaluated ? restart : submitAnswers}>
+						<Button
+							className="bottomBtn"
+							onClick={isEvaluated ? restart : submitAnswers}
+						>
 							{isEvaluated ? 'Play Again' : 'Check Answers'}
-						</button>
-						<button onClick={goToOptions}>Settings</button>
+						</Button>
+						<Button className="bottomBtn" onClick={goToOptions}>
+							<SettingsIcon />
+						</Button>
 						{isEvaluated && (
 							<p>{`You answered ${correctAnswersTally}/5 correct!`}</p>
 						)}

@@ -37,7 +37,9 @@ button {
 }
 
 .question {
-	max-width: 600px;
+	max-width: 700px;
+	min-width: 400px;
+	width: 70vw;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
@@ -115,8 +117,8 @@ button {
 	gap: 1rem;
 
 	p {
+		color: $white;
 		font-size: 1.2rem;
-		align-self: flex-end;
 	}
 	.bottomBtn {
 		background-color: $tertiary;

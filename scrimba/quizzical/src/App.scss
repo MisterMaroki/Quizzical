@@ -12,7 +12,7 @@ $danger: #f8bcbc;
 body {
 	margin: 0;
 	padding: 0;
-	height: 100vh;
+	height: 100%;
 	width: 100%;
 	display: flex;
 	justify-content: center;
@@ -102,11 +102,13 @@ button {
 .bottom {
 	padding-top: 1rem;
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-start;
 	align-items: center;
+	gap: 1rem;
 
 	p {
 		font-size: 1.2rem;
+		align-self: flex-end;
 	}
 }
 #category .MuiSelect-outlined {

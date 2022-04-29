@@ -2,6 +2,7 @@ import Select from 'react-select';
 import { Button, ButtonGroup } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Rings } from 'react-loader-spinner';
+import Confetti from 'react-confetti';
 
 import './App.css';
 import Question from './Question';
@@ -46,6 +47,11 @@ function App() {
 		countSelected();
 	}, [isEvaluated]);
 
+	const goToOptions = () => {
+		setStarted(false);
+		setInOptions(true);
+	};
+
 	const countSelected = () => {
 		const howManySelected =
 			document.querySelectorAll('.selected.correct').length;
@@ -71,7 +77,6 @@ function App() {
 	};
 	const handleType = (e) => {
 		setSelectedType(e.target.value);
-		console.log(e.target.value);
 	};
 
 	//map over questions in state to generate a Question for each
@@ -188,9 +193,11 @@ function App() {
 						<button onClick={isEvaluated ? restart : submitAnswers}>
 							{isEvaluated ? 'Play Again' : 'Check Answers'}
 						</button>
+						<button onClick={goToOptions}>Settings</button>
 						{isEvaluated && (
 							<p>{`You answered ${correctAnswersTally}/5 correct!`}</p>
 						)}
+						{isEvaluated && correctAnswersTally >= 4 && <Confetti />}
 					</div>
 				</div>
 			)}

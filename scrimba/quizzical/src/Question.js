@@ -43,7 +43,6 @@ const Question = ({
 		<Button
 			disabled={
 				isEvaluated &&
-				!document.getElementById(answer).classList.contains('selected') &&
 				!document.getElementById(answer).classList.contains('selected')
 			}
 			variant="outlined"

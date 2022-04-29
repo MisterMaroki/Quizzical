@@ -16,8 +16,10 @@ function App() {
 	const [isEvaluated, setIsEvaluated] = useState(false);
 	const [correctAnswersTally, setCorrectAnswersTally] = useState(0);
 	const [currentPage, setCurrentPage] = useState(1);
+	console.log('🚀 ~ file: App.js ~ line 19 ~ App ~ currentPage', currentPage);
 
 	const [isRestarted, setIsRestarted] = useState(false);
+
 	const getNewQuestions = async () => {
 		const res = await fetch(`https://opentdb.com/api.php?amount=20`);
 		const data = await res.json();
@@ -30,9 +32,10 @@ function App() {
 		setStarted(true);
 		setIsRestarted(false);
 	};
-	useEffect(() => {
-		countSelected();
-	}, [isEvaluated]);
+
+	// useEffect(() => {
+	// 	countSelected();
+	// }, [isEvaluated]);
 
 	const countSelected = () => {
 		const howManySelected =
@@ -42,6 +45,7 @@ function App() {
 
 	const submitAnswers = () => {
 		setIsEvaluated(true);
+		countSelected();
 	};
 
 	const restart = () => {

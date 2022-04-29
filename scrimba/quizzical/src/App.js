@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Question from './Question';
 
@@ -15,44 +15,56 @@ function App() {
 	const [questions, setQuestions] = useState([]);
 	const [isEvaluated, setIsEvaluated] = useState(false);
 	const [correctAnswersTally, setCorrectAnswersTally] = useState(0);
+	const [currentPage, setCurrentPage] = useState(1);
 
+	const [isRestarted, setIsRestarted] = useState(false);
 	const getNewQuestions = async () => {
-		const res = await fetch('https://opentdb.com/api.php?amount=5');
+		const res = await fetch(`https://opentdb.com/api.php?amount=20`);
 		const data = await res.json();
-
-		setQuestions(data.results);
+		setQuestions(() => data.results);
 	};
 
 	const startGame = async () => {
-		if (!started) {
-			await getNewQuestions();
-			setStarted(true);
-		}
+		setIsEvaluated(false);
+		getNewQuestions();
+		setStarted(true);
+		setIsRestarted(false);
 	};
 
-	const checkAnswers = () => {
+	const submitAnswers = () => {
 		setIsEvaluated(true);
 	};
 
+	const restart = () => {
+		setIsEvaluated(false);
+		setIsRestarted(true);
+		setCorrectAnswersTally(0);
+
+		startGame();
+	};
+
+	useEffect(() => {
+		if (isRestarted) {
+			setCurrentPage(1);
+			setIsRestarted(false);
+		}
+	}, [isRestarted]);
+
 	//map over questions in state to generate a Question for each
-	const questionElements = questions.map((question) => (
-		<Question
-			//all question data
-			data={question}
-			//whether they have been submitted
-			isEvaluated={isEvaluated}
-			//an array containing the correct answer, then all others
-			allAnswers={[question.correct_answer, ...question.incorrect_answers].map(
-				(answer) =>
-					answer === question.correct_answer
-						? { answer: answer, correct: true }
-						: { answer: answer, correct: false }
-			)}
-			//need to be able
-			correctAnswersTally={correctAnswersTally}
-			setCorrectAnswersTally={setCorrectAnswersTally}
-		/>
-	));
+	const questionElements = questions
+		?.slice(currentPage * 5 - 5, currentPage * 5)
+		.map((question) => (
+			<Question
+				//all question data
+				question={question}
+				//whether they have been submitted
+				isEvaluated={isEvaluated}
+				isRestarted={isRestarted}
+				//need to be able
+				correctAnswersTally={correctAnswersTally}
+				setCorrectAnswersTally={setCorrectAnswersTally}
+			/>
+		));
 
 	return (
 		<div className="App">
@@ -66,8 +78,14 @@ function App() {
 			{started && (
 				<div className="questions">
 					{questionElements}
-					<button onClick={checkAnswers}>Check Answers</button>
-					{isEvaluated && <p>{correctAnswersTally}</p>}
+					<div className="bottom">
+						<button onClick={isEvaluated ? restart : submitAnswers}>
+							{isEvaluated ? 'Play Again' : 'Check Answers'}
+						</button>
+						{isEvaluated && (
+							<p>{`You answered ${correctAnswersTally}/5 correct!`}</p>
+						)}
+					</div>
 				</div>
 			)}
 		</div>

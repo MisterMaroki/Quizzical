@@ -21,6 +21,7 @@ body {
 	background-color: $primary;
 	// font-family: $fontBase;
 	font-size: 2rem;
+
 	color: $white;
 }
 
@@ -49,13 +50,11 @@ button {
 	h3 {
 		font-size: 1.2rem;
 	}
+
 	.answers {
-		display: flex;
 		align-self: flex-end;
-		align-items: flex-end;
+
 		margin-top: 1rem;
-		flex-wrap: none;
-		gap: 0.5rem;
 	}
 	.answer {
 		background-color: transparent;
@@ -65,8 +64,10 @@ button {
 	.selected {
 		filter: brightness(0.9);
 		color: $white;
-		border: 1px solid $white;
+		border: 1px solid $tertiary;
 		background-color: rgba(245, 245, 245, 0.07);
+		box-shadow: none;
+		animation: bounce 1.5s ease-in-out;
 		.wrong {
 			color: $gray;
 			background-color: $danger;
@@ -87,5 +88,20 @@ button {
 	.wrong,
 	.correct {
 		border: none;
+	}
+	.css-1rwt2y5-MuiButtonBase-root-MuiButton-root:hover {
+		border: 1px solid $tertiary;
+	}
+}
+@keyframes bounce {
+}
+.bottom {
+	padding-top: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	p {
+		font-size: 1.2rem;
 	}
 }

@@ -55,18 +55,9 @@ button {
 }
 
 .question .answers {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   -ms-flex-item-align: end;
       align-self: flex-end;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
   margin-top: 1rem;
-  -ms-flex-wrap: none;
-      flex-wrap: none;
-  gap: 0.5rem;
 }
 
 .question .answer {
@@ -79,8 +70,12 @@ button {
   -webkit-filter: brightness(0.9);
           filter: brightness(0.9);
   color: #f5f5f5;
-  border: 1px solid #f5f5f5;
+  border: 1px solid #e2d784;
   background-color: rgba(245, 245, 245, 0.07);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-animation: bounce 1.5s ease-in-out;
+          animation: bounce 1.5s ease-in-out;
 }
 
 .question .selected .wrong {
@@ -106,5 +101,28 @@ button {
 .question .wrong,
 .question .correct {
   border: none;
+}
+
+.question .css-1rwt2y5-MuiButtonBase-root-MuiButton-root:hover {
+  border: 1px solid #e2d784;
+}
+
+@-webkit-keyframes bounce {}
+
+@keyframes bounce {}.bottom {
+  padding-top: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.bottom p {
+  font-size: 1.2rem;
 }
 /*# sourceMappingURL=App.css.map */

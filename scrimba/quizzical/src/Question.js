@@ -1,59 +1,73 @@
 import React, { useEffect, useState } from 'react';
-var he = require('he');
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
+var he = require('he');
 const Question = ({
-	data,
+	question,
 	isEvaluated,
-	allAnswers,
+
 	correctAnswersTally,
 	setCorrectAnswersTally,
+	isRestarted,
 }) => {
 	const [isAnswered, setIsAnswered] = useState(false);
 	const [selectedAnswer, setSelectedAnswer] = useState([]);
-
 	//in order to avoid shuffling every time this is re-rendered we will shuffle only once when we initialise state for each question
-	const [answers, setAnswers] = useState(() => {
-		let randomIndex = Math.floor(Math.random() * allAnswers.length);
-		for (let i = 0; i < randomIndex; i++) {
-			allAnswers.push(allAnswers.shift());
-		}
-		return allAnswers;
-	});
+	const [answers, setAnswers] = useState([
+		question.correct_answer,
+		...question.incorrect_answers,
+	]);
 
 	const handleAnswer = (answer) => {
 		if (!isEvaluated) {
 			setIsAnswered(true);
-			setSelectedAnswer(answer);
-		} else {
-			answer.correct &&
-				answer.answer !== selectedAnswer &&
-				setCorrectAnswersTally(() => correctAnswersTally + 1);
+			setSelectedAnswer(he.decode(answer));
 		}
 	};
 
+	useEffect(() => {
+		isEvaluated &&
+			isAnswered &&
+			he.decode(selectedAnswer).toLowerCase() ===
+				he.decode(question.correct_answer).toLowerCase() &&
+			setCorrectAnswersTally(() => correctAnswersTally + 1);
+
+		//an array containing the correct answer, then all others
+		setAnswers(() => {
+			var x = [question.correct_answer, ...question.incorrect_answers];
+
+			let random = Math.floor(Math.random() * 3);
+			for (let i = 0; i < random; i++) {
+				x.push(x.shift());
+			}
+			return x;
+		});
+	}, [question]);
+
 	const answerElements = answers?.map((answer) => (
-		<button
-			key={answer.answer}
+		<Button
+			key={answer}
 			className={`answer ${
 				isEvaluated &&
-				(selectedAnswer.answer === answer.answer
-					? answer.correct
+				(selectedAnswer === answer
+					? answer === question.correct_answer
 						? 'correct selected'
 						: 'selected wrong'
-					: answer.correct
+					: answer === question.correct_answer
 					? 'correct'
 					: '')
-			} ${selectedAnswer.answer === answer.answer ? 'selected' : ''}`}
+			} ${selectedAnswer === answer ? 'selected' : ''}`}
 			onClick={() => handleAnswer(answer)}
 		>
-			{he.decode(answer.answer)}
-		</button>
+			{he.decode(answer)}
+		</Button>
 	));
 
 	return (
 		<div className="question">
-			<h3 key={data.question}>{he.decode(data.question)}</h3>
-			<div className="answers">{answerElements}</div>
+			<h3 key={question.question}>{he.decode(question.question)}</h3>
+			<ButtonGroup className="answers">{answerElements}</ButtonGroup>
 		</div>
 	);
 };

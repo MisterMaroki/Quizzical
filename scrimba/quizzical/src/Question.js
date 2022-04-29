@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import React, { useEffect, useRef, useState } from 'react';
+
+import { Button, ButtonGroup } from '@mui/material';
 
 var he = require('he');
 const Question = ({
@@ -18,7 +18,7 @@ const Question = ({
 		question.correct_answer,
 		...question.incorrect_answers,
 	]);
-
+	const answerBtn = useRef(null);
 	const handleAnswer = (answer) => {
 		if (!isEvaluated) {
 			setIsAnswered(true);
@@ -27,12 +27,6 @@ const Question = ({
 	};
 
 	useEffect(() => {
-		isEvaluated &&
-			isAnswered &&
-			he.decode(selectedAnswer).toLowerCase() ===
-				he.decode(question.correct_answer).toLowerCase() &&
-			setCorrectAnswersTally(() => correctAnswersTally + 1);
-
 		//an array containing the correct answer, then all others
 		setAnswers(() => {
 			var x = [question.correct_answer, ...question.incorrect_answers];
@@ -47,7 +41,15 @@ const Question = ({
 
 	const answerElements = answers?.map((answer) => (
 		<Button
+			disabled={
+				isEvaluated &&
+				!document.getElementById(answer).classList.contains('selected') &&
+				!document.getElementById(answer).classList.contains('selected')
+			}
+			variant="outlined"
 			key={answer}
+			id={answer}
+			ref={answerBtn}
 			className={`answer ${
 				isEvaluated &&
 				(selectedAnswer === answer

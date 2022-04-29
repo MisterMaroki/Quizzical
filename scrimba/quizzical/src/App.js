@@ -30,6 +30,15 @@ function App() {
 		setStarted(true);
 		setIsRestarted(false);
 	};
+	useEffect(() => {
+		countSelected();
+	}, [isEvaluated]);
+
+	const countSelected = () => {
+		const howManySelected =
+			document.querySelectorAll('.selected.correct').length;
+		setCorrectAnswersTally(howManySelected);
+	};
 
 	const submitAnswers = () => {
 		setIsEvaluated(true);

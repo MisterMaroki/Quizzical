@@ -28,6 +28,7 @@ button {
   padding: 5px 10px;
   border-radius: 5px;
   border: 1px solid transparent;
+  cursor: pointer;
   -webkit-box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
           box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
@@ -55,8 +56,8 @@ button {
 }
 
 .question .answers {
-  -ms-flex-item-align: end;
-      align-self: flex-end;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
   margin-top: 1rem;
 }
 
@@ -88,7 +89,7 @@ button {
   background-color: #94d7a2;
 }
 
-.question .wrong {
+.question .incorrect {
   color: #6b7688;
   background-color: #f8bcbc;
 }
@@ -98,13 +99,17 @@ button {
   background-color: #94d7a2;
 }
 
-.question .wrong,
+.question .incorrect,
 .question .correct {
   border: none;
 }
 
-.question .css-1rwt2y5-MuiButtonBase-root-MuiButton-root:hover {
-  border: 1px solid #e2d784;
+.question .MuiButtonGroup-root:hover.MuiButton-root:hover {
+  border: 1px solid #e2d784 !important;
+}
+
+.question .MuiButton-root:hover {
+  border: 1px solid #e2d784 !important;
 }
 
 @-webkit-keyframes bounce {}
@@ -124,5 +129,9 @@ button {
 
 .bottom p {
   font-size: 1.2rem;
+}
+
+#category .MuiSelect-outlined {
+  color: #062c30;
 }
 /*# sourceMappingURL=App.css.map */

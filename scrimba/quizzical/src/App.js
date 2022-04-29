@@ -1,36 +1,43 @@
+import { Component } from 'react';
+import Select from 'react-select';
+import { Button, ButtonGroup } from '@mui/material';
 import { useEffect, useState } from 'react';
 import './App.css';
 import Question from './Question';
-
-// 0:
-// category: "Entertainment: Video Games"
-// correct_answer: "30"
-// difficulty: "medium"
-// incorrect_answers: (3) ['5', '60', '15']
-// question: "By how many minutes are you late to work in &quot;Half-Life&quot;?"
-// type: "multiple"
 
 function App() {
 	const [started, setStarted] = useState(false);
 	const [questions, setQuestions] = useState([]);
 	const [isEvaluated, setIsEvaluated] = useState(false);
 	const [correctAnswersTally, setCorrectAnswersTally] = useState(0);
-
-	const [isRestarted, setIsRestarted] = useState(false);
+	const [inOptions, setInOptions] = useState(false);
+	const [difficulty, setDifficulty] = useState('easy');
+	const [categories, setCategories] = useState([]);
+	const [selectedCategory, setSelectedCategory] = useState(9);
+	const [selectedType, setSelectedType] = useState('multiple');
 
 	const getNewQuestions = async () => {
-		const res = await fetch(`https://opentdb.com/api.php?amount=20`);
+		const res = await fetch(
+			`https://opentdb.com/api.php?amount=20&difficulty=${difficulty}&type=${selectedType}&category=${selectedCategory}`
+		);
 		const data = await res.json();
 		setQuestions(() => data.results);
 	};
+	const getCategories = async () => {
+		const res = await fetch('https://opentdb.com/api_category.php');
+		const data = await res.json();
+		setCategories(data.trivia_categories);
+	};
 
 	const startGame = async () => {
+		setInOptions(false);
 		setIsEvaluated(false);
 		getNewQuestions();
 		setStarted(true);
-		setIsRestarted(false);
 	};
-
+	useEffect(() => {
+		getCategories();
+	}, []);
 	useEffect(() => {
 		countSelected();
 	}, [isEvaluated]);
@@ -47,17 +54,21 @@ function App() {
 
 	const restart = () => {
 		setIsEvaluated(false);
-		setIsRestarted(true);
 		setCorrectAnswersTally(0);
 
 		startGame();
 	};
 
-	useEffect(() => {
-		if (isRestarted) {
-			setIsRestarted(false);
-		}
-	}, [isRestarted]);
+	const handleDifficulty = (e) => {
+		setDifficulty(e.target.value);
+	};
+	const handleCategory = (e) => {
+		setSelectedCategory(e.value);
+	};
+	const handleType = (e) => {
+		setSelectedType(e.target.value);
+		console.log(e.target.value);
+	};
 
 	//map over questions in state to generate a Question for each
 	const questionElements = questions?.slice(0, 5).map((question) => (
@@ -66,20 +77,105 @@ function App() {
 			question={question}
 			//whether they have been submitted
 			isEvaluated={isEvaluated}
-			isRestarted={isRestarted}
 		/>
 	));
 
+	const options = categories.map((cat) =>
+		cat.name ? { value: cat.id, label: cat.name } : {}
+	);
+
 	return (
-		<div className="App">
-			{!started && (
+		<div className="App questions">
+			{!started && !inOptions && (
 				<div className="app__flex start-screen">
 					<h2 className="quiz-start-header">Quizzical</h2>
 					<p>Play as fast as you can to beat the others!</p>
-					<button onClick={startGame}>Start quiz</button>
+					<button onClick={() => setInOptions(true)}>Start quiz</button>
 				</div>
 			)}
-			{started && (
+			{!started && inOptions && (
+				<div className="app__flex start-screen">
+					<div className="question">
+						<h3>Choose your difficulty</h3>
+						<ButtonGroup className="answers">
+							<Button
+								className={difficulty === 'easy' ? 'selected answer' : 'answer'}
+								variant="outlined"
+								value="easy"
+								onClick={(e) => {
+									handleDifficulty(e);
+								}}
+							>
+								Easy
+							</Button>
+							<Button
+								className={
+									difficulty === 'medium' ? 'selected answer' : 'answer'
+								}
+								value="medium"
+								variant="outlined"
+								onClick={(e) => {
+									handleDifficulty(e);
+								}}
+							>
+								Medium
+							</Button>
+							<Button
+								className={difficulty === 'hard' ? 'selected answer' : 'answer'}
+								value="hard"
+								variant="outlined"
+								onClick={(e) => {
+									handleDifficulty(e);
+								}}
+							>
+								Hard
+							</Button>
+						</ButtonGroup>
+					</div>
+					<div className="question">
+						<h3>Choose question type</h3>
+
+						<ButtonGroup className="answers">
+							<Button
+								className={
+									selectedType === 'multiple' ? 'selected answer' : 'answer'
+								}
+								variant="outlined"
+								value="multiple"
+								onClick={(e) => {
+									handleType(e);
+								}}
+							>
+								Multiple Choice
+							</Button>
+							<Button
+								className={
+									selectedType === 'boolean' ? 'selected answer' : 'answer'
+								}
+								variant="outlined"
+								value="boolean"
+								onClick={(e) => {
+									handleType(e);
+								}}
+							>
+								True/False
+							</Button>
+						</ButtonGroup>
+					</div>
+					<div className="question">
+						<h3>Choose category(optional)</h3>
+
+						<Select
+							options={options}
+							value={selectedCategory}
+							onChange={handleCategory}
+							style={{ maxHeight: 10 }}
+						/>
+					</div>
+					<button onClick={() => startGame()}>Start quiz</button>
+				</div>
+			)}
+			{started && !inOptions && (
 				<div className="questions">
 					{questionElements}
 					<div className="bottom">

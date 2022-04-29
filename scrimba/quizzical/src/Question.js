@@ -3,12 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, ButtonGroup } from '@mui/material';
 
 var he = require('he');
-const Question = ({
-	question,
-	isEvaluated,
-
-	isRestarted,
-}) => {
+const Question = ({ question, isEvaluated }) => {
 	const [isAnswered, setIsAnswered] = useState(false);
 	const [selectedAnswer, setSelectedAnswer] = useState([]);
 	//in order to avoid shuffling every time this is re-rendered we will shuffle only once when we initialise state for each question
@@ -35,7 +30,7 @@ const Question = ({
 			}
 			return x;
 		});
-	}, [question]);
+	}, [question.correct_answer, question.incorrect_answers]);
 
 	const answerElements = answers?.map((answer) => (
 		<Button
@@ -52,7 +47,7 @@ const Question = ({
 				(selectedAnswer === answer
 					? answer === question.correct_answer
 						? 'correct selected'
-						: 'selected wrong'
+						: 'incorrect selected'
 					: answer === question.correct_answer
 					? 'correct'
 					: '')

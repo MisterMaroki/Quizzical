@@ -92,6 +92,9 @@ button {
 	.MuiButtonGroup-root:hover {
 		border: 1px solid $tertiary !important;
 	}
+	.MuiButton-root:hover {
+		border: 1px solid $tertiary !important;
+	}
 }
 @keyframes bounce {
 }

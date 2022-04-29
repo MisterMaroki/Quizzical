@@ -33,6 +33,24 @@ button {
           box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
+.app__flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 1rem;
+}
+
+.app__flex p {
+  padding-top: 10px;
+  font-size: 1rem;
+}
+
 .question {
   max-width: 700px;
   min-width: 400px;
@@ -155,5 +173,43 @@ button {
 
 .bottom .bottomBtn:hover {
   color: #e2d784;
+}
+
+div.dropdown-menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  width: 30vw;
+  height: 30vh;
+  overflow-y: scroll;
+  display: none;
+}
+
+div.dropdown-menu a {
+  background-color: #e2d784;
+  width: 100%;
+  color: #030303;
+  font-size: 1rem;
+}
+
+div.dropdown-menu a:hover {
+  -webkit-filter: brightness(0.8);
+          filter: brightness(0.8);
+}
+
+.dropdown-menu.show {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 /*# sourceMappingURL=App.css.map */

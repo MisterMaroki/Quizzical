@@ -4,9 +4,11 @@ import { useEffect, useState } from 'react';
 import { Rings } from 'react-loader-spinner';
 import Confetti from 'react-confetti';
 import SettingsIcon from '@mui/icons-material/Settings';
+import styled from 'styled-components';
 
 import './App.css';
 import Question from './Question';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 function App() {
 	const [started, setStarted] = useState(false);
@@ -19,10 +21,11 @@ function App() {
 	const [selectedCategory, setSelectedCategory] = useState(9);
 	const [selectedType, setSelectedType] = useState('multiple');
 	const [isLoading, setIsLoading] = useState(false);
+	const [dropDownOpen, setDropDownOpen] = useState(false);
 
 	const getNewQuestions = async () => {
 		const res = await fetch(
-			`https://opentdb.com/api.php?amount=20&difficulty=${difficulty}&type=${selectedType}&category=${selectedCategory}`
+			`https://opentdb.com/api.php?amount=20&difficulty=${difficulty}&type=${selectedType}&category=${selectedCategory.id}`
 		);
 		const data = await res.json();
 		setQuestions(() => data.results);
@@ -74,7 +77,7 @@ function App() {
 		setDifficulty(e.target.value);
 	};
 	const handleCategory = (e) => {
-		setSelectedCategory(e.value);
+		setSelectedCategory({ id: e.target.id, name: e.target.name });
 	};
 	const handleType = (e) => {
 		setSelectedType(e.target.value);
@@ -90,15 +93,23 @@ function App() {
 		/>
 	));
 
-	const options = categories.map((cat) =>
-		cat.name ? { value: cat.id, label: cat.name } : {}
-	);
+	const dropItems = categories.map((cat) => (
+		<Dropdown.Item
+			value={cat.id}
+			name={cat.name}
+			id={cat.id}
+			key={cat.id}
+			onClick={(e) => handleCategory(e)}
+		>
+			{cat.name}
+		</Dropdown.Item>
+	));
 
 	return (
 		<div className="App questions">
 			{isLoading && <Rings color="#e2d784" height={80} width={80} />}
 			{!started && !inOptions && !isLoading && (
-				<div className="app__flex start-screen">
+				<div className="start-screen">
 					<Rings color="#e2d784" height={80} width={80} />
 					<h2 className="quiz-start-header">Quizzical</h2>
 					<p>Play as fast as you can to beat the others!</p>
@@ -106,7 +117,7 @@ function App() {
 				</div>
 			)}
 			{!started && inOptions && !isLoading && (
-				<div className="app__flex start-screen">
+				<div className="start-screen">
 					<div className="question">
 						<h3>Choose your difficulty</h3>
 						<ButtonGroup className="answers">
@@ -177,12 +188,19 @@ function App() {
 					<div className="question">
 						<h3>Choose category(optional)</h3>
 
-						<Select
-							options={options}
-							value={selectedCategory}
-							onChange={handleCategory}
-							style={{ maxHeight: 10 }}
-						/>
+						<div className="app__flex">
+							<DropdownButton
+								id="dropdown-categories"
+								className="bottomBtn"
+								title="Categories"
+								onClick={() => setDropDownOpen(!dropDownOpen)}
+							>
+								{dropItems}
+							</DropdownButton>
+							{selectedCategory.name && (
+								<p>Current category: {selectedCategory.name}</p>
+							)}
+						</div>
 					</div>
 					<button onClick={() => startGame()}>Start quiz</button>
 				</div>

@@ -36,6 +36,17 @@ button {
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
+.app__flex {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	p {
+		padding-top: 10px;
+		font-size: 1rem;
+	}
+}
+
 .question {
 	max-width: 700px;
 	min-width: 400px;
@@ -128,4 +139,26 @@ button {
 			color: $tertiary;
 		}
 	}
+}
+div.dropdown-menu {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: 30vw;
+	height: 30vh;
+	overflow-y: scroll;
+	display: none;
+	a {
+		background-color: $tertiary;
+		width: 100%;
+		color: $black;
+		font-size: 1rem;
+		&:hover {
+			filter: brightness(0.8);
+		}
+	}
+}
+.dropdown-menu.show {
+	display: flex;
 }

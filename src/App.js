@@ -213,7 +213,7 @@ function App() {
 						{isEvaluated && (
 							<p>{`You answered ${correctAnswersTally}/5 correct!`}</p>
 						)}
-						{isEvaluated && correctAnswersTally >= 0 && <Confetti recycle />}
+						{isEvaluated && correctAnswersTally >= 4 && <Confetti recycle />}
 					</div>
 				</div>
 			)}

@@ -53,7 +53,7 @@ button {
 
 .question {
   max-width: 700px;
-  min-width: 400px;
+  min-width: 300px;
   width: 70vw;
   display: -webkit-box;
   display: -ms-flexbox;

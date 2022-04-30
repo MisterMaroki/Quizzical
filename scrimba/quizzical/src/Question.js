@@ -57,9 +57,11 @@ const Question = ({ question, isEvaluated }) => {
 	));
 
 	return (
-		<div className="question">
+		<div className="question" key={question.id}>
 			<h3 key={question.question}>{he.decode(question.question)}</h3>
-			<ButtonGroup className="answers">{answerElements}</ButtonGroup>
+			<ButtonGroup key={question.toString()} className="answers">
+				{answerElements}
+			</ButtonGroup>
 		</div>
 	);
 };

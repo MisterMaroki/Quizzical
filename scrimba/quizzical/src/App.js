@@ -18,18 +18,36 @@ function App() {
 	const [inOptions, setInOptions] = useState(false);
 	const [difficulty, setDifficulty] = useState('easy');
 	const [categories, setCategories] = useState([]);
-	const [selectedCategory, setSelectedCategory] = useState(9);
+	const [selectedCategory, setSelectedCategory] = useState({ id: 9 });
 	const [selectedType, setSelectedType] = useState('multiple');
 	const [isLoading, setIsLoading] = useState(false);
 	const [dropDownOpen, setDropDownOpen] = useState(false);
 
 	const getNewQuestions = async () => {
 		const res = await fetch(
-			`https://opentdb.com/api.php?amount=20&difficulty=${difficulty}&type=${selectedType}&category=${selectedCategory.id}`
+			`https://opentdb.com/api.php?amount=5&difficulty=${difficulty}&type=${selectedType}&category=${selectedCategory.id}`
 		);
 		const data = await res.json();
-		setQuestions(() => data.results);
-		setIsLoading(false);
+		if (data.results.length !== 0) {
+			setQuestions(() => data.results);
+			setIsLoading(false);
+		} else {
+			const response = await fetch(
+				`https://opentdb.com/api.php?amount=5&difficulty=${difficulty}&category=${selectedCategory.id}`
+			);
+			const data = await response.json();
+			if (data.results.length !== 0) {
+				setQuestions(() => data.results);
+				setIsLoading(false);
+			} else {
+				const response = await fetch(
+					`https://opentdb.com/api.php?amount=5&category=${selectedCategory.id}`
+				);
+				const data = await response.json();
+				setQuestions(() => data.results);
+				setIsLoading(false);
+			}
+		}
 	};
 	const getCategories = async () => {
 		const res = await fetch('https://opentdb.com/api_category.php');
@@ -84,7 +102,7 @@ function App() {
 	};
 
 	//map over questions in state to generate a Question for each
-	const questionElements = questions?.slice(0, 5).map((question) => (
+	const questionElements = questions?.map((question) => (
 		<Question
 			//all question data
 			question={question}
@@ -121,68 +139,41 @@ function App() {
 					<div className="question">
 						<h3>Choose your difficulty</h3>
 						<ButtonGroup className="answers">
-							<Button
-								className={difficulty === 'easy' ? 'selected answer' : 'answer'}
-								variant="outlined"
-								value="easy"
-								onClick={(e) => {
-									handleDifficulty(e);
-								}}
-							>
-								Easy
-							</Button>
-							<Button
-								className={
-									difficulty === 'medium' ? 'selected answer' : 'answer'
-								}
-								value="medium"
-								variant="outlined"
-								onClick={(e) => {
-									handleDifficulty(e);
-								}}
-							>
-								Medium
-							</Button>
-							<Button
-								className={difficulty === 'hard' ? 'selected answer' : 'answer'}
-								value="hard"
-								variant="outlined"
-								onClick={(e) => {
-									handleDifficulty(e);
-								}}
-							>
-								Hard
-							</Button>
+							{['Easy', 'Medium', 'Hard'].map((a) => (
+								<Button
+									className={difficulty === a ? 'selected answer' : 'answer'}
+									variant="outlined"
+									value={a}
+									onClick={(e) => {
+										handleDifficulty(e);
+									}}
+								>
+									{a}
+								</Button>
+							))}
 						</ButtonGroup>
 					</div>
 					<div className="question">
 						<h3>Choose question type</h3>
 
 						<ButtonGroup className="answers">
-							<Button
-								className={
-									selectedType === 'multiple' ? 'selected answer' : 'answer'
-								}
-								variant="outlined"
-								value="multiple"
-								onClick={(e) => {
-									handleType(e);
-								}}
-							>
-								Multiple Choice
-							</Button>
-							<Button
-								className={
-									selectedType === 'boolean' ? 'selected answer' : 'answer'
-								}
-								variant="outlined"
-								value="boolean"
-								onClick={(e) => {
-									handleType(e);
-								}}
-							>
-								True/False
-							</Button>
+							{[
+								{ type: 'multiple', nice: 'Mutliple Choice' },
+								{ type: 'boolean', nice: 'True / False' },
+							].map((type) => (
+								<Button
+									className={
+										selectedType === type.type ? 'selected answer' : 'answer'
+									}
+									variant="outlined"
+									value={type.type}
+									onClick={(e) => {
+										handleType(e);
+									}}
+								>
+									{type.nice}
+								</Button>
+							))}
 						</ButtonGroup>
 					</div>
 					<div className="question">
@@ -210,18 +201,19 @@ function App() {
 					{questionElements}
 					<div className="bottom">
 						<Button
+							key="start"
 							className="bottomBtn"
 							onClick={isEvaluated ? restart : submitAnswers}
 						>
 							{isEvaluated ? 'Play Again' : 'Check Answers'}
 						</Button>
-						<Button className="bottomBtn" onClick={goToOptions}>
+						<Button key="finish" className="bottomBtn" onClick={goToOptions}>
 							<SettingsIcon />
 						</Button>
 						{isEvaluated && (
 							<p>{`You answered ${correctAnswersTally}/5 correct!`}</p>
 						)}
-						{isEvaluated && correctAnswersTally >= 4 && <Confetti />}
+						{isEvaluated && correctAnswersTally >= 0 && <Confetti recycle />}
 					</div>
 				</div>
 			)}

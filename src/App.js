@@ -24,30 +24,23 @@ function App() {
 	const [dropDownOpen, setDropDownOpen] = useState(false);
 
 	const getNewQuestions = async () => {
-		const res = await fetch(
-			`https://opentdb.com/api.php?amount=5&difficulty=${difficulty}&type=${selectedType}&category=${selectedCategory.id}`
+		let url = `https://opentdb.com/api.php?amount=5&category=${selectedCategory.id}`;
+		let res = await fetch(
+			url.concat(`&difficulty=${difficulty}&type=${selectedType}`)
 		);
-		const data = await res.json();
+		let data = await res.json();
 		if (data.results.length !== 0) {
-			setQuestions(() => data.results);
-			setIsLoading(false);
 		} else {
-			const response = await fetch(
-				`https://opentdb.com/api.php?amount=5&difficulty=${difficulty}&category=${selectedCategory.id}`
-			);
-			const data = await response.json();
+			res = await fetch(url.concat(`&difficulty=${difficulty}`));
+			data = await res.json();
 			if (data.results.length !== 0) {
-				setQuestions(() => data.results);
-				setIsLoading(false);
 			} else {
-				const response = await fetch(
-					`https://opentdb.com/api.php?amount=5&category=${selectedCategory.id}`
-				);
-				const data = await response.json();
-				setQuestions(() => data.results);
-				setIsLoading(false);
+				res = await fetch(url);
+				data = await res.json();
 			}
 		}
+		setQuestions(() => data.results);
+		setIsLoading(false);
 	};
 	const getCategories = async () => {
 		const res = await fetch('https://opentdb.com/api_category.php');

@@ -23,6 +23,9 @@ function App() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [dropDownOpen, setDropDownOpen] = useState(false);
 
+	const wait = (ms) => {
+		return new Promise((resolve) => setTimeout(resolve, ms));
+	};
 	const getNewQuestions = async () => {
 		let url = `https://opentdb.com/api.php?amount=5&category=${selectedCategory.id}`;
 		let res = await fetch(
@@ -39,6 +42,7 @@ function App() {
 				data = await res.json();
 			}
 		}
+		await wait(600);
 		setQuestions(() => data.results);
 		setIsLoading(false);
 	};
@@ -118,7 +122,13 @@ function App() {
 
 	return (
 		<div className="App questions">
-			{isLoading && <Rings color="#e2d784" height={80} width={80} />}
+			{isLoading && (
+				<div>
+					<Rings color="#e2d784" height={80} width={80} />{' '}
+					<h3>Gathering your questions from the web...</h3>{' '}
+				</div>
+			)}
+
 			{!started && !inOptions && !isLoading && (
 				<div className="start-screen">
 					<Rings color="#e2d784" height={80} width={80} />

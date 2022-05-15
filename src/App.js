@@ -1,10 +1,8 @@
-import Select from 'react-select';
 import { Button, ButtonGroup } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Rings } from 'react-loader-spinner';
 import Confetti from 'react-confetti';
 import SettingsIcon from '@mui/icons-material/Settings';
-import styled from 'styled-components';
 
 import './App.css';
 import Question from './Question';

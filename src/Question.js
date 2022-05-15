@@ -6,29 +6,17 @@ var he = require('he');
 const Question = ({ question, isEvaluated }) => {
 	const [selectedAnswer, setSelectedAnswer] = useState([]);
 	//in order to avoid shuffling every time this is re-rendered we will shuffle only once when we initialise state for each question
-	const [answers, setAnswers] = useState([
-		question.correct_answer,
-		...question.incorrect_answers,
-	]);
+	const [answers, setAnswers] = useState(
+		[question.correct_answer, ...question.incorrect_answers].sort(
+			(a, b) => 0.5 - Math.random()
+		)
+	);
 	const answerBtn = useRef(null);
 	const handleAnswer = (answer) => {
 		if (!isEvaluated) {
 			setSelectedAnswer(he.decode(answer));
 		}
 	};
-
-	useEffect(() => {
-		//an array containing the correct answer, then all others
-		setAnswers(() => {
-			var x = [question.correct_answer, ...question.incorrect_answers];
-
-			let random = Math.floor(Math.random() * 3);
-			for (let i = 0; i < random; i++) {
-				x.push(x.shift());
-			}
-			return x;
-		});
-	}, [question.correct_answer, question.incorrect_answers]);
 
 	const answerElements = answers?.map((answer) => (
 		<Button

@@ -5,7 +5,7 @@ import Confetti from 'react-confetti';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import './App.css';
-import Question from './Question';
+import Question from './Components/Question';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 function App() {
